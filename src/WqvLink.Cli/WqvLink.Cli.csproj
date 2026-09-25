@@ -1,0 +1,10 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>WqvLink.Cli</RootNamespace>
+    <AssemblyName>wqvlink</AssemblyName>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\WqvLink.Core\WqvLink.Core.csproj" />
+  </ItemGroup>
+</Project>

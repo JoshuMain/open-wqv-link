@@ -1,0 +1,17 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="WqvLink.App.Views.InfoWindow"
+        Width="640" SizeToContent="Height" MaxHeight="760" CanResize="False"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="20">
+        <StackPanel DockPanel.Dock="Bottom" Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right" Margin="0,16,0,0">
+            <Button x:Name="CancelButton" Content="Cancel" IsVisible="False" MinWidth="90"
+                    HorizontalContentAlignment="Center" Click="Cancel_Click" />
+            <Button x:Name="OkButton" Content="OK" Classes="accent" MinWidth="90"
+                    HorizontalContentAlignment="Center" Click="Ok_Click" />
+        </StackPanel>
+        <ScrollViewer>
+            <SelectableTextBlock x:Name="Body" TextWrapping="Wrap" />
+        </ScrollViewer>
+    </DockPanel>
+</Window>

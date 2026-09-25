@@ -1,0 +1,12 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="WqvLink.App.App"
+             RequestedThemeVariant="Default">
+    <Application.Styles>
+        <FluentTheme />
+        <!-- Every window (main, dialogs, help) shows the app icon in its title bar. -->
+        <Style Selector=":is(Window)">
+            <Setter Property="Icon" Value="/Assets/app.ico" />
+        </Style>
+    </Application.Styles>
+</Application>

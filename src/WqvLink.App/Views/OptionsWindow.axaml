@@ -1,0 +1,74 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WqvLink.App.ViewModels"
+        x:Class="WqvLink.App.Views.OptionsWindow"
+        x:DataType="vm:OptionsViewModel"
+        Title="Options"
+        Width="600" SizeToContent="Height" CanResize="False"
+        WindowStartupLocation="CenterOwner">
+    <StackPanel Margin="20" Spacing="16">
+
+        <StackPanel Spacing="8">
+            <TextBlock Text="Where photos are saved" FontSize="16" FontWeight="SemiBold" />
+            <TextBlock TextWrapping="Wrap" Opacity="0.75"
+                       Text="Each download goes into its own dated folder inside this folder, with the raw dump.bin kept alongside." />
+            <DockPanel>
+                <Button DockPanel.Dock="Right" Content="Browse…" Margin="8,0,0,0" Click="Browse_Click" />
+                <TextBox Text="{Binding OutputRoot}" />
+            </DockPanel>
+        </StackPanel>
+
+        <StackPanel Spacing="8">
+            <TextBlock Text="Image output" FontSize="16" FontWeight="SemiBold" />
+            <Grid ColumnDefinitions="140,*" RowDefinitions="Auto,Auto" RowSpacing="8">
+                <TextBlock Text="Format" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Formats}" SelectedItem="{Binding Format}"
+                          HorizontalAlignment="Stretch" />
+                <TextBlock Grid.Row="1" Text="Size" VerticalAlignment="Center" />
+                <ComboBox Grid.Row="1" Grid.Column="1" ItemsSource="{Binding Scales}" SelectedItem="{Binding Scale}"
+                          HorizontalAlignment="Stretch" />
+            </Grid>
+        </StackPanel>
+
+        <StackPanel Spacing="8">
+            <TextBlock Text="File names" FontSize="16" FontWeight="SemiBold" />
+            <Grid ColumnDefinitions="140,*" RowDefinitions="Auto,Auto,Auto" RowSpacing="8">
+                <TextBlock Text="Preset" VerticalAlignment="Center" />
+                <ComboBox Grid.Column="1" ItemsSource="{Binding Presets}" SelectedItem="{Binding Preset}"
+                          PlaceholderText="Choose a preset…" HorizontalAlignment="Stretch" />
+                <TextBlock Grid.Row="1" Text="Format" VerticalAlignment="Center" />
+                <TextBox Grid.Row="1" Grid.Column="1" Text="{Binding FileNameTemplate}" />
+                <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding Preview}" Opacity="0.75" />
+            </Grid>
+            <TextBlock TextWrapping="Wrap" FontSize="12" Opacity="0.75"
+                       Text="Tokens: {index} photo number (001) · {stamp} 20241230-1350 · {date} 2024-12-30 · {time} 1350 · {name} name on the watch" />
+        </StackPanel>
+
+        <StackPanel Spacing="6">
+            <TextBlock Text="Dates and details" FontSize="16" FontWeight="SemiBold" />
+            <CheckBox IsChecked="{Binding SetFileDates}"
+                      Content="Set each file's date to when the photo was taken" />
+            <CheckBox IsChecked="{Binding EmbedMetadata}" IsEnabled="{Binding IsPng}"
+                      Content="Save the date, name and camera inside the image (PNG only)" />
+            <CheckBox IsChecked="{Binding WriteSidecars}"
+                      Content="Also save a .json file with each photo's details" />
+        </StackPanel>
+
+        <Expander Header="Advanced (diagnostics)">
+            <StackPanel Spacing="6">
+                <CheckBox IsChecked="{Binding Invert}" Content="Invert brightness" />
+                <CheckBox IsChecked="{Binding SwapNibbles}" Content="Swap pixel pairs (swap nibbles)" />
+                <TextBlock FontSize="12" Opacity="0.75" TextWrapping="Wrap"
+                           Text="Only for diagnosing decoding problems. Leave both off for normal photos." />
+            </StackPanel>
+        </Expander>
+
+        <DockPanel>
+            <Button DockPanel.Dock="Left" Content="Reset to defaults" Click="Reset_Click" />
+            <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Right">
+                <Button Content="Cancel" Click="Cancel_Click" MinWidth="90" HorizontalContentAlignment="Center" />
+                <Button Content="Save" Classes="accent" Click="Save_Click" MinWidth="90" HorizontalContentAlignment="Center" />
+            </StackPanel>
+        </DockPanel>
+    </StackPanel>
+</Window>

@@ -1,0 +1,120 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WqvLink.App.ViewModels"
+        x:Class="WqvLink.App.Views.MainWindow"
+        x:DataType="vm:MainViewModel"
+        Title="Open WQV Link"
+        Width="1100" Height="720" MinWidth="640" MinHeight="420"
+        WindowStartupLocation="CenterScreen">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="_File">
+                <MenuItem Header="_Open photos (dump.bin)…" Click="OpenDump_Click" InputGesture="Ctrl+O" HotKey="Ctrl+O" />
+                <MenuItem Header="Open _latest download" Click="OpenLatest_Click" />
+                <Separator />
+                <MenuItem Header="Export _selected…" Click="ExportSelected_Click" />
+                <MenuItem Header="Export _all…" Click="ExportAll_Click" InputGesture="Ctrl+E" HotKey="Ctrl+E" />
+                <MenuItem Header="Open photos _folder" Click="OpenFolder_Click" />
+                <Separator />
+                <MenuItem Header="E_xit" Click="Exit_Click" />
+            </MenuItem>
+            <MenuItem Header="_Watch">
+                <MenuItem Header="_Get photos from watch…" Click="Download_Click" InputGesture="Ctrl+D" HotKey="Ctrl+D" />
+                <Separator />
+                <MenuItem Header="How to set up the _watch" Click="HelpWatch_Click" />
+            </MenuItem>
+            <MenuItem Header="_Microcontroller">
+                <MenuItem Header="_Set up / flash Pico…" Click="Setup_Click" />
+                <MenuItem Header="_Find Pico port" Click="FindPort_Click" />
+                <Separator />
+                <MenuItem Header="_Wiring guide" Click="HelpWiring_Click" />
+            </MenuItem>
+            <MenuItem Header="_Tests">
+                <MenuItem Header="_Loopback (Pico only)…" Tag="Loopback" Click="Test_Click" />
+                <MenuItem Header="_Blast IR (transmitter)…" Tag="Blast" Click="Test_Click" />
+                <MenuItem Header="_Echo (transmit and receive)…" Tag="Echo" Click="Test_Click" />
+                <MenuItem Header="_Sniff (receiver)…" Tag="Sniff" Click="Test_Click" />
+                <MenuItem Header="_Ping watch…" Tag="Ping" Click="Test_Click" />
+            </MenuItem>
+            <MenuItem Header="_Options">
+                <MenuItem Header="_Settings…" Click="Options_Click" InputGesture="Ctrl+OemComma" HotKey="Ctrl+OemComma" />
+            </MenuItem>
+            <MenuItem Header="_Help">
+                <MenuItem Header="_Wiring guide" Click="HelpWiring_Click" />
+                <MenuItem Header="Using the _watch" Click="HelpWatch_Click" />
+                <MenuItem Header="_Troubleshooting" Click="HelpTroubleshooting_Click" />
+                <Separator />
+                <MenuItem Header="_About Open WQV Link" Click="HelpAbout_Click" />
+            </MenuItem>
+        </Menu>
+
+        <Border DockPanel.Dock="Top" Padding="10,8"
+                BorderThickness="0,0,0,1" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+            <DockPanel>
+                <StackPanel DockPanel.Dock="Right" Orientation="Horizontal" Spacing="8" VerticalAlignment="Center">
+                    <TextBlock Text="Photo size" VerticalAlignment="Center" />
+                    <Slider Minimum="120" Maximum="480" Width="180" Value="{Binding ThumbnailSize}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Spacing="10" VerticalAlignment="Center">
+                    <Button Classes="accent" Content="Get photos from watch" Click="Download_Click" />
+                    <Button Content="Pico setup…" Click="Setup_Click" />
+                    <TextBlock Text="{Binding PortText}" VerticalAlignment="Center" Opacity="0.75" />
+                </StackPanel>
+            </DockPanel>
+        </Border>
+
+        <Border DockPanel.Dock="Bottom" Padding="10,4"
+                BorderThickness="0,1,0,0" BorderBrush="{DynamicResource SystemControlForegroundBaseLowBrush}">
+            <DockPanel>
+                <TextBlock DockPanel.Dock="Right" Text="{Binding CountText}" Margin="12,0,0,0" />
+                <TextBlock Text="{Binding StatusText}" TextTrimming="CharacterEllipsis" />
+            </DockPanel>
+        </Border>
+
+        <Grid>
+            <ListBox x:Name="Gallery" ItemsSource="{Binding Photos}" SelectionMode="Multiple"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     Background="Transparent" Padding="8"
+                     DoubleTapped="Gallery_DoubleTapped">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="View" Click="View_Click" />
+                        <MenuItem Header="Export selected…" Click="ExportSelected_Click" />
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+                <ListBox.ItemTemplate>
+                    <DataTemplate x:DataType="vm:PhotoItem">
+                        <StackPanel Spacing="2" ToolTip.Tip="{Binding Details}"
+                                    Width="{Binding $parent[Window].((vm:MainViewModel)DataContext).ThumbnailSize}">
+                            <Image Source="{Binding Bitmap}" Stretch="Uniform"
+                                   RenderOptions.BitmapInterpolationMode="None"
+                                   Width="{Binding $parent[Window].((vm:MainViewModel)DataContext).ThumbnailSize}"
+                                   Height="{Binding $parent[Window].((vm:MainViewModel)DataContext).ThumbnailSize}" />
+                            <TextBlock Text="{Binding Title}" FontWeight="SemiBold" TextTrimming="CharacterEllipsis" />
+                            <TextBlock Text="{Binding DateText}" FontSize="12" Opacity="0.7" />
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <StackPanel IsVisible="{Binding !HasPhotos}" HorizontalAlignment="Center" VerticalAlignment="Center"
+                        Spacing="10" MaxWidth="460">
+                <TextBlock Text="No photos yet" FontSize="22" FontWeight="SemiBold" HorizontalAlignment="Center" />
+                <TextBlock TextWrapping="Wrap" TextAlignment="Center"
+                           Text="Connect your Pico, put the watch in IR → COM → PC, then press Get photos from watch." />
+                <Button Content="Get photos from watch" Classes="accent" HorizontalAlignment="Center"
+                        Padding="20,10" FontSize="16" Click="Download_Click" />
+                <StackPanel Orientation="Horizontal" Spacing="8" HorizontalAlignment="Center">
+                    <Button Content="Pico setup…" Click="Setup_Click" />
+                    <Button Content="Wiring guide" Click="HelpWiring_Click" />
+                    <Button Content="Open photos…" Click="OpenDump_Click" />
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</Window>

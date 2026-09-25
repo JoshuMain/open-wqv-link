@@ -1,0 +1,12 @@
+bin/
+obj/
+.vs/
+*.user
+samples/
+TestResults/
+firmware/build/
+
+# Windows/macOS folder clutter
+desktop.ini
+Thumbs.db
+.DS_Store

@@ -1,0 +1,102 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:WqvLink.App.ViewModels"
+        x:Class="WqvLink.App.Views.SetupWindow"
+        x:DataType="vm:SetupViewModel"
+        Title="Pico setup"
+        Width="720" Height="640" MinWidth="560" MinHeight="520"
+        WindowStartupLocation="CenterOwner">
+    <DockPanel Margin="16">
+        <Button DockPanel.Dock="Bottom" Content="Close" HorizontalAlignment="Right" Margin="0,12,0,0"
+                MinWidth="90" HorizontalContentAlignment="Center" Click="Close_Click" />
+
+        <TabControl x:Name="Tabs">
+
+            <!-- 1. Find the Pico -->
+            <TabItem Header="1. Find the Pico">
+                <StackPanel Spacing="10" Margin="4,12,4,0">
+                    <TextBlock Text="{Binding DetectText}" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <ComboBox ItemsSource="{Binding Ports}" SelectedItem="{Binding SelectedPort}" MinWidth="260"
+                                  PlaceholderText="No serial ports" />
+                        <Button Content="Refresh" Click="Refresh_Click" IsEnabled="{Binding !IsBusy}" />
+                        <Button Content="Save this port" Classes="accent" Click="SavePort_Click" IsEnabled="{Binding !IsBusy}" />
+                    </StackPanel>
+                    <TextBlock Text="{Binding SavedPortText}" Opacity="0.75" />
+                    <TextBlock TextWrapping="Wrap" Opacity="0.75" FontSize="12" Margin="0,8,0,0"
+                               Text="The Pico shows up as a USB serial port (COM port on Windows). Ports marked &quot;Pico (recommended)&quot; are Raspberry Pi boards. Saving the port takes you to the next step." />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Wiring guide" Click="Wiring_Click" />
+                        <Button Content="Next →" Click="Next_Click" MinWidth="90" HorizontalContentAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
+            <!-- 2. Firmware -->
+            <TabItem Header="2. Firmware">
+                <StackPanel Spacing="10" Margin="4,12,4,0">
+                    <TextBlock TextWrapping="Wrap"
+                               Text="The Pico needs the WQV bridge firmware. Flashing replaces whatever is on it. You only need to do this once, or after updating Open WQV Link." />
+                    <TextBlock Text="{Binding FirmwareText}" Opacity="0.75" TextWrapping="Wrap" />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Flash WQV bridge firmware" Classes="accent" Click="FlashBundled_Click"
+                                IsEnabled="{Binding !IsBusy}" IsVisible="{Binding HasFirmware}" />
+                        <Button Content="Flash a .uf2 file…" Click="FlashFile_Click" IsEnabled="{Binding !IsBusy}" />
+                        <Button Content="Cancel" Click="CancelFlash_Click" IsVisible="{Binding IsBusy}" />
+                    </StackPanel>
+                    <ProgressBar Height="8" Minimum="0" Maximum="100" Value="{Binding FlashPercent}" IsVisible="{Binding IsBusy}" />
+                    <TextBlock Text="{Binding FlashMessage}" TextWrapping="Wrap" FontWeight="SemiBold" />
+                    <TextBlock TextWrapping="Wrap" Opacity="0.75" FontSize="12"
+                               Text="If the Pico doesn't respond: unplug it, hold the white BOOTSEL button, plug it back in and release. It then appears as a drive called RPI-RP2 and flashing works from there." />
+                    <StackPanel Orientation="Horizontal" Spacing="8">
+                        <Button Content="Next →" Classes="accent" Click="Next_Click" MinWidth="90"
+                                HorizontalContentAlignment="Center" IsVisible="{Binding FlashSucceeded}" />
+                        <Button Content="Already flashed? Next →" Click="Next_Click" IsEnabled="{Binding !IsBusy}"
+                                IsVisible="{Binding !FlashSucceeded}" />
+                    </StackPanel>
+                </StackPanel>
+            </TabItem>
+
+            <!-- 3. Test it works -->
+            <TabItem Header="3. Test it works">
+                <DockPanel Margin="4,12,4,0" DataContext="{Binding Check}" x:DataType="vm:HardwareCheckViewModel">
+                    <StackPanel DockPanel.Dock="Top" Spacing="10">
+                        <TextBlock Text="{Binding StepTitle}" FontSize="18" FontWeight="SemiBold" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Instructions}" TextWrapping="Wrap" />
+                        <TextBlock Text="{Binding Status}" TextWrapping="Wrap" FontWeight="SemiBold"
+                                   IsVisible="{Binding Status, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+
+                        <StackPanel Orientation="Horizontal" Spacing="8">
+                            <Button Content="Test" Classes="accent" MinWidth="110" HorizontalContentAlignment="Center"
+                                    Click="Test_Click" IsVisible="{Binding !IsRunning}" />
+                            <Button Content="{Binding Choice1}" Classes="accent" Tag="0" Click="Choice_Click"
+                                    IsVisible="{Binding Choice1, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                            <Button Content="{Binding Choice2}" Tag="1" Click="Choice_Click"
+                                    IsVisible="{Binding Choice2, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                            <Button Content="{Binding Choice3}" Tag="2" Click="Choice_Click"
+                                    IsVisible="{Binding Choice3, Converter={x:Static StringConverters.IsNotNullOrEmpty}}" />
+                            <Button Content="Stop" Click="StopPhase_Click" IsVisible="{Binding CanStop}" />
+                        </StackPanel>
+
+                        <ItemsControl ItemsSource="{Binding Results}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate x:DataType="x:String">
+                                    <TextBlock Text="{Binding}" TextWrapping="Wrap" Margin="0,2" />
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+
+                        <TextBlock Text="{Binding Explanation}" TextWrapping="Wrap" Opacity="0.75" FontSize="12"
+                                   IsVisible="{Binding ShowConsole}" />
+                    </StackPanel>
+
+                    <TextBox x:Name="CheckOutput" Margin="0,8,0,0" IsVisible="{Binding ShowConsole}"
+                             Text="{Binding Console.Text}" IsReadOnly="True" AcceptsReturn="True" TextWrapping="NoWrap"
+                             FontFamily="Consolas,Menlo,DejaVu Sans Mono,monospace" FontSize="12"
+                             ScrollViewer.VerticalScrollBarVisibility="Auto"
+                             ScrollViewer.HorizontalScrollBarVisibility="Auto" />
+                </DockPanel>
+            </TabItem>
+        </TabControl>
+    </DockPanel>
+</Window>
