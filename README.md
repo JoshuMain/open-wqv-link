@@ -11,9 +11,11 @@ Download the photos from your **Casio WQV-1 wrist camera watch** (2000) to a mod
 | Model | Notes |
 |---|---|
 | Casio WQV-1 | Fully supported - Verified | 
-| Casio WQV-2 | Believed to work without issues, it's the same watch module - Untested |
+| Casio WQV-2 | Believed to work without issues*, it's the same watch module - Untested |
 | Casio WQV-3 | May work in greyscale... Worth a shot - Untested | 
 | Casio WQV-10 | I don't think so, however it may work with some tinkering |
+
+*Based on research, months will be shifted forward by one
 
 ## What it does
 
@@ -49,7 +51,8 @@ These are the parts I used, I plan to expand whats compatible, allowing for use 
 ## Quick start
 
 1. **Wire it up**: see [docs/wiring.md](docs/wiring.md). Five wires, should be solder free! The RST wire matters.
-2. **Download and run Open WQV Link**: <!-- TODO: link to the Releases page once you publish one -->.
+2. **Download and run Open WQV Link**: get the latest version from the
+   [Releases page](https://github.com/JoshuMain/open-wqv-link/releases/latest).
 3. **Set up the Pico**: in the app, click **Pico setup...** and go through the three tabs:
    find the Pico, flash the firmware, test it. See [docs/setup.md](docs/setup.md).
 4. **Get your photos**: on the watch choose **IR -> COM -> PC**, hold it 5-10 cm from the board, then
@@ -81,7 +84,6 @@ A full download of 29 photos takes about 5 minutes. The watch's infrared is slow
   <https://www.mgroeber.de/wqvprot.html>
 - **Kees Jongenburger** - WQV-2 notes:
   <https://wqv-wristcam.sourceforge.net/protocol/protocol.html>
-- <!-- TODO: anyone else you'd like to thank -->
 
 ## Licence
 
@@ -90,5 +92,3 @@ Third-party components and their licences are listed in [THIRD-PARTY-NOTICES.md]
 
 Casio and WQV are trademarks of Casio Computer Co., Ltd., used here only to describe the watches this
 project works with.
-
-<!-- TODO: optional sections: project story/blog link, "why I built this", contributing. -->
