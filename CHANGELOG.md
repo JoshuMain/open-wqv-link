@@ -20,7 +20,7 @@ How to use:
 First public version of the C# app!
 
 ### Added
-- Desktop app (Windows; macOS and Linux builds untested) with a photo gallery, a photo viewer and export.
+- Desktop app (Windows and Linux builds tested - macOS untested) with a photo gallery, a photo viewer and export.
 - **Get photos from watch** with get-ready instructions, progress, time remaining, cancel and retry.
 - **Pico setup**: finds the Pico's port, flashes the bundled WQV bridge firmware (no Arduino IDE
   needed), and a guided hardware test (send via phone camera, receive via TV remote, optional watch ping).

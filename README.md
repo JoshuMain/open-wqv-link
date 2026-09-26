@@ -2,6 +2,8 @@
 
 Download the photos from your **Casio WQV-1 wrist camera watch** (2000) to a modern PC, using a DIY approach. No Palm Pilot, no Windows 98, no IrDA dongle.
 
+[Read the full story!](https://joshmain.dev/Blog/Six-Months-One-Watch-29-Photos)
+
 *An independent, open-source project. It is not Casio's official WQV Link software, and is not affiliated with or endorsed by Casio.*
 
 ![Open WQV Link showing photos downloaded from a Casio WQV-1](docs/images/gallery.png)
@@ -11,9 +13,9 @@ Download the photos from your **Casio WQV-1 wrist camera watch** (2000) to a mod
 | Model | Notes |
 |---|---|
 | Casio WQV-1 | Fully supported - Verified | 
-| Casio WQV-2 | Believed to work without issues*, it's the same watch module - Untested |
-| Casio WQV-3 | May work in greyscale... Worth a shot - Untested | 
-| Casio WQV-10 | I don't think so, however it may work with some tinkering |
+| Casio WQV-2 | Should work but its dates will show a month early - Untested |
+| Casio WQV-3 | Untested - Goal is to support it in the future | 
+| Casio WQV-10 | Untested - Goal is to support it in the future |
 
 *Based on research, months will be shifted forward by one
 
@@ -33,7 +35,7 @@ These are the parts I used, I plan to expand whats compatible, allowing for use 
 |---|---|
 | Casio WQV-1 or 2 | With photos on it, and a battery that isn't low |
 | Raspberry Pi Pico (RP2040) | The original Pico. Pico 2 isn't supported yet as I don't have one, I imagine it would be easy to do |
-| MikroElektronika **IrDA 3 Click** | The infrared transceiver board (the IrDA 4 Click should also work) |
+| MikroElektronika **IrDA 3 Click** | The infrared transceiver board (the IrDA 4 Click may also work - Untested) |
 | 5 jumper wires | check for your usage, female to female if your pico has headers, if breadboarding male to male ect |
 | USB cable | Must be a **data** cable, not a charge-only one, must work with your microcontroller |
 | A PC | Windows 10/11. macOS and Linux builds* |

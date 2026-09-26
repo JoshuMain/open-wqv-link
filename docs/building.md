@@ -114,7 +114,7 @@ Output goes to `src/WqvLink.App/bin/Release/net8.0/<RID>/publish/`.
 | Build fails on a warning | Intentional. Fix the warning. Suppress it only with a comment explaining why |
 | `file is locked by another process` during build | The app or CLI is still running. Close it |
 | Avalonia XAML previewer is blank | Build the solution once. The previewer needs compiled output |
-| Serial port "access denied" | Another program (Arduino Serial Monitor, the Python tool, a second app instance) has the port open |
+| Serial port "access denied" | Another program (Arduino Serial Monitor, a second app instance) has the port open |
 
 ## Contributing
 
